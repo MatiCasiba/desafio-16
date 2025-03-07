@@ -1,5 +1,5 @@
 * Nombre: Matias Gabriel Casiba
-* Link GitHub Repo:
+* Link GitHub Repo: https://github.com/MatiCasiba/desafio-16
 * Link Netlify:
 
 # Desafío 16
@@ -79,7 +79,13 @@ const Formulario = () => {
 
 export default Formulario
 ```
-* Para mostrar este formulario en pantalla, lo exportaré a App.jsx
+### Input edad
+Dentro de este input tendrá unas configuraciones únicas, no quiero usar el input de tipo numero, utilicé el de tipo texto, pero quiero que solamente el usuario ingrese números, para esto use:
+* pattern="[0-9]*" -> permite solo números, pero no evita las letras
+* inpputMode="numeric" -> logra que en dispositivos moviles aparezca el teclado numérico
+
+### Exportando el formulario a App
+Para mostrar este formulario en pantalla, lo exportaré a App.jsx
 ```sh
 import Formulario from "./components/Formulario"
 
