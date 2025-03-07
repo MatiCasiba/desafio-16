@@ -17,7 +17,7 @@ const Formulario = () => {
                 {/* CAMPO NOMBRE */}
                 <label 
                     htmlFor="lbl-nombre"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700"
                 >
                     Nombre
                 </label>
@@ -31,7 +31,7 @@ const Formulario = () => {
                 {/* CAMPO APELLIDO */}
                 <label 
                     htmlFor="lbl-apellido"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700"
                 >
                     Apellido
                 </label>
@@ -45,7 +45,7 @@ const Formulario = () => {
                 {/* CAMPO EDAD */}
                 <label 
                     htmlFor="lbl-edad"
-                    className="block mb-2 text-sm font-medium text-gray-700"    
+                    className="block mb-2 text-sm font-bold text-gray-700"    
                 >
                     Edad
                 </label>
@@ -61,7 +61,7 @@ const Formulario = () => {
                 {/* CAMPO PUESTO */}
                 <label 
                     htmlFor="lbl-puesto"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700"
                 >
                     Puesto
                 </label>
@@ -101,3 +101,68 @@ const App = () => {
 export default App
 
 ```
+
+## Lista de usuarios
+En el componente ListadoUsuarios, se cargarán todos los datos que coloque el usuario dentro del formulario, este componente se encuentra en src/components/ListadoUsuarios.jsx. Primero empezaré estilizando, dividiendo las secciones nombre, apellido, edad y puesto:
+```sh
+import React from 'react'
+
+const ListadoUsuarios = () => {
+  return (
+    <>
+        <table className='w-full text-sm text-left text-gray-500'>
+            <thead className='text-xs text-gray-800 uppercase bg-gray-200'>
+                <tr>
+                    <th className="px-6 py-3">Nombre</th>
+                    <th className="px-6 py-3">Apellido</th>
+                    <th className="px-6 py-3">Edad</th>
+                    <th className="px-6 py-3">Puesto</th>
+                </tr>
+            </thead>
+        </table>
+        
+    </>
+  )
+}
+
+export default ListadoUsuarios
+```
+* Las letras que contiene los elementos th, estarán en mayuscula (lo logro con uppercase) y serán un poco gruesa, con la intención de que estos destaquen
+
+### Exporto el listado al App.jsx
+Como en el formulario, quiero que se muestre dicha tabla, entonces lo exportaré en App.jsx:
+```sh
+import Formulario from "./components/Formulario"
+import ListadoUsuarios from "./components/ListadoUsuarios"
+
+const App = () => {
+  return (
+    <>
+      <Formulario />
+      <ListadoUsuarios />
+    </>
+  )
+}
+
+export default App
+```
+
+## Fuente
+Eh importado una tipografía para que el texto tenga otro diseño de letra:
+
+* En la terminal
+```sh
+npm install @fontsource/barlow
+```
+* index.css
+```sh
+@import '@fontsource/barlow/100.css';
+@import '@fontsource/barlow/300.css';
+@import '@fontsource/barlow/700.css';
+@import "tailwindcss";
+
+@theme {
+    --font-sans: 'Barlow', sans-serif;
+}
+```
+

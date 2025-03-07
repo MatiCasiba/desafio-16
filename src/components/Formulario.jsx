@@ -2,13 +2,13 @@
 const Formulario = () => {
   return (
     <>
-        <div className="max-w-lg mb-4">
+        <div className="max-w-lg m-auto mb-4">
             <form className="bg-gray-100 border rounded-lg p-6">
                 
                 {/* CAMPO NOMBRE */}
                 <label 
                     htmlFor="lbl-nombre"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
                 >
                     Nombre
                 </label>
@@ -22,7 +22,7 @@ const Formulario = () => {
                 {/* CAMPO APELLIDO */}
                 <label 
                     htmlFor="lbl-apellido"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
                 >
                     Apellido
                 </label>
@@ -36,7 +36,7 @@ const Formulario = () => {
                 {/* CAMPO EDAD */}
                 <label 
                     htmlFor="lbl-edad"
-                    className="block mb-2 text-sm font-medium text-gray-700"    
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"    
                 >
                     Edad
                 </label>
@@ -52,7 +52,7 @@ const Formulario = () => {
                 {/* CAMPO PUESTO */}
                 <label 
                     htmlFor="lbl-puesto"
-                    className="block mb-2 text-sm font-medium text-gray-700"
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
                 >
                     Puesto
                 </label>
