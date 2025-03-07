@@ -1,8 +1,11 @@
+import Formulario from "./components/Formulario"
 
 
 const App = () => {
   return (
-    <div>App</div>
+    <>
+      <Formulario />
+    </>
   )
 }
 
