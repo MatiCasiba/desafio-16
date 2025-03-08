@@ -193,3 +193,114 @@ npm install @fontsource/barlow
 }
 ```
 
+## Rutas
+Lo que estaré haciendo en rutas es la navegación de los links que habrá en el navbar, esto accederá al contenido de cada uno de los componentes dentro de la carpeta "pages" (se encuentra en: src/pages/), los componentes que tengo acá son Inicio.jsx, Nosotros.jsx y Usuarios.jsx.
+* Quien tendrá contenido es el Usuarios.jsx, dentro de este estaré colocando App.jsx, ya no se encontrará mas en el main.jsx, en el main.jsx se ecnontrará el componente Rutas.jsx 
+```sh
+# Usuarios.jsx
+import App from '../App'
+
+const Usuarios = () => {
+  return (
+    <App />
+  )
+}
+
+export default Usuarios
+```
+### Rutas.jsx:
+Acá contendrá la navegación de los componentes (este componete se encuentra dentro de src/routes/)
+```sh
+import { useRoutes } from "react-router"
+import Inicio from "../pages/Inicio"
+import Usuarios from "../pages/Usuarios"
+import Nosotros from "../pages/Nosotros"
+
+const Rutas = () => {
+    const rutasApp = useRoutes(
+        [
+            {
+                path: '/',
+                element: <Inicio />
+            },
+            {
+                path: '/ususarios',
+                element: <Usuarios />
+            },
+            {
+                path: '/nosostros',
+                element: <Nosotros />
+            },
+            
+
+        ]
+    )
+    return rutasApp
+}
+
+export default Rutas
+```
+
+### main.jsx
+Como mencioné, en el main no estará App.jsx, estará Rutas.jsx
+```sh
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { BrowserRouter } from 'react-router'
+import Rutas from './routes/Rutas.jsx'
+import Navbar from './components/Navbar.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <Navbar />
+      <div className='container mx-auto'>
+        <Rutas />
+      </div>
+    </BrowserRouter>
+  </StrictMode>,
+)
+```
+* Como el contenido del crud se está ejecutando dentro de l componete Usuarios.jsx, importaré Rutas.jsx en el main.jsx
+
+### Navbar
+Como has visto, hay un compponente Navbar.jsx dentro del main, aquí se encuentra la barra de navegación:
+```sh
+import { Link, NavLink } from "react-router"
+
+const Navbar = () => {
+  return (
+    <nav className="bg-red-400">
+        <div className="container mx-auto flex justify-between items-center">
+            <Link 
+                to="https://github.com/MatiCasiba" 
+                target="_blank" 
+                className="text-black text-lg font-bold"
+                title="github - MatiCasiba"
+            >
+                MatiDev
+            </Link>
+            
+            <ul className="flex space-x-5">
+                <li><NavLink to="/" className="text-black hover:text-white">
+                    Inicio
+                </NavLink></li>
+                
+                <li><NavLink to="/usuarios" className="text-black hover:text-white">
+                    Usuarios
+                </NavLink></li>
+                
+                <li><NavLink to="/nosotros" className="text-black hover:text-white">
+                    Nosotros
+                </NavLink></li>
+            </ul>
+        </div>
+    </nav>
+  )
+}
+
+export default Navbar
+```
+Entonces el usuario podrá ver la barrra de navegación en la parte superiror y podrá acceder a donde necesite.
