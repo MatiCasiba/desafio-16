@@ -62,6 +62,22 @@ const Formulario = () => {
                     placeholder="Ingrese su puesto"
                     className="w-full bg-white p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" 
                 />
+
+                {/* BOTONES */}
+                <div className="flex justify-between">
+                    <button 
+                        type="submit"
+                        className="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-800 cursor-pointer"
+                    >
+                        Subir
+                    </button>
+                    <button 
+                        type="reset"
+                        className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-800 cursor-pointer"
+                    >
+                        Cancelar
+                    </button>
+                </div>
             </form>
         </div>
     </>

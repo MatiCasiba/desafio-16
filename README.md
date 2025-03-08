@@ -84,6 +84,33 @@ Dentro de este input tendrá unas configuraciones únicas, no quiero usar el inp
 * pattern="[0-9]*" -> permite solo números, pero no evita las letras
 * inpputMode="numeric" -> logra que en dispositivos moviles aparezca el teclado numérico
 
+### Botones
+Eh creado botones dentro del formulario que serviran para subir todos los datos o en caso de que el usaurio se arrepienta, tiene la opción para cancelar (este tendrá la función de vaciar todo dato que contenga el formulario, osea resetear). Primero te mostrará el diseño de este y sus espacios:
+```sh
+    <div className="max-w-lg m-auto mb-4">
+            <form className="bg-gray-100 border rounded-lg p-6">
+                
+                ...
+
+                # estarán dentro de un contenedor, gracias a esto podré dar un espacio entre ellos, eso lo logro con el flex y justify-between
+                <div className="flex justify-between">
+                    <button 
+                        type="submit"
+                        className="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-800 cursor-pointer"
+                    >
+                        Subir
+                    </button>
+                    <button 
+                        type="reset"
+                        className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-800 cursor-pointer"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+```
+
 ### Exportando el formulario a App
 Para mostrar este formulario en pantalla, lo exportaré a App.jsx
 ```sh
