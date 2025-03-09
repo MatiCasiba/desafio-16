@@ -174,6 +174,215 @@ const App = () => {
 export default App
 ```
 
+## Fila
+Dentro de fila estará la info que obtengo del data json, más los botones para ver, editar y borrar, toda esta info obtenida, la mostraré en la tabla de ListadoUsuarios (su cuerpo), con cáda info correspondiente en su casilla. 
+
+### Cargando los datos del db.json en ListadosUsuarios.jsx
+Ahora haré que se vea en pantalla la info que se encuentra en mi db.json, para estos datos son pasado a través de props que las tengo desde App.jsx y son pasadas por los componentes ListadoUsuarios.jsx y Fila.jsx. En App.jsx estaré realizando la petición para pedir los usuarios del db.json:
+
+* App.jsx
+```sh
+import { useEffect, useState } from "react"
+import Formulario from "./components/Formulario"
+import ListadoUsuarios from "./components/ListadoUsuarios"
+
+
+const App = () => {
+
+  const [usuarios, setUsuarios] = useState(null)
+  # usuarios es mi  estado y setUsuarios será quien modifique al estado
+
+
+  # voy  a obtener esa información creando esta petición asincrónica getAllUsers y  con un useEffect
+  useEffect(()=> {
+    getAllUsers()
+  }, [])
+
+  const getAllUsers = async () => {
+    try {
+      const res = await fetch(import.meta.env.VITE_BACKEND)
+      if(!res.ok){
+        throw new Error('No se pudo realizar la petición') # en el caso de que no se haya realizado la petición, lanzo un mensaje
+      }
+      const data = await res.json()
+
+      setUsuarios(data)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return (
+    <>
+      <Formulario />
+      <ListadoUsuarios 
+        usuarios={usuarios}
+        # paso el estado como prop, quien lo recebirá este componete y Fila.jsx
+      />
+    </>
+  )
+}
+
+export default App
+```
+
+* ListadoUsuarios.jsx:
+```sh
+import React from 'react'
+import Fila from './Fila'
+import Spinner from './Spinner'
+
+const ListadoUsuarios = ({usuarios}) => {
+  return (
+    <>
+        # creo un ternario para mostrar toda la tabla, de lo contrario se mostrará un spinner que es una animación de carga
+        {usuarios ? (
+          <table className='w-full text-sm text-left text-gray-500'>
+            <thead className='text-xs text-gray-800 uppercase bg-gray-200'>
+                <tr>
+                    <th className="px-6 py-3">Nombre</th>
+                    <th className="px-6 py-3">Apellido</th>
+                    <th className="px-6 py-3">Edad</th>
+                    <th className="px-6 py-3">Puesto</th>
+                </tr>
+            </thead> # encabezado
+            <tbody> # cuerpo (donde se encontrará toda la info organizada que me traigo del componente fila)
+              {
+                usuarios.map((usuario)=> ( # recorro cada uno de los usuarios
+                  <Fila 
+                    usuario={usuario}
+                    key={usuario.id}
+                  />
+                ))
+              }
+            </tbody>
+          </table>
+        ) : (
+          <Spinner />
+        )}
+    </>
+  )
+}
+
+export default ListadoUsuarios
+```
+
+* Fila.jsx:
+```sh
+#               ⬇️recibo la prop
+const Fila = ({usuario}) => {
+  return (
+    <tr className="bg-white border-b border-gray-400">
+        # dentro de la base, voy a obtener los detalles de los usuarios de esta manera, nombrando correctamente cada uno como los nombré en el db.json
+        <td className="px-6 py-4">{usuario.nombre}</td>
+        <td className="px-6 py-4">{usuario.apellido}</td>
+        <td className="px-6 py-4">{usuario.edad}</td>
+        <td className="px-6 py-4">{usuario.puesto}</td>
+        <td className="px-6 py-4">
+
+            # sección de acciones, donde se encontrará los botones que contendrá funcion para ver, editar o borrarlo de la tabla
+            <button 
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer mr-2"
+            >
+                Ver
+            </button>
+            <button
+                className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 cursor-pointer mr-2"
+            >
+                Editar
+            </button>
+            <button 
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer mr-2"
+            >
+                Eliminar
+            </button>
+        </td>
+    </tr>
+  )
+}
+
+export default Fila
+```
+
+## Creando el spinner
+El spinner será la animación de carga en caso de que no se veán los usuarios en la tabla:
+* Spinner.css:
+```sh
+.spinner {
+    margin: 100px auto;
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    font-size: 10px;
+  }
+  
+  .spinner > div {
+    background-color: #333;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  }
+  
+  .spinner .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+  }
+  
+  .spinner .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+  
+  .spinner .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+  }
+  
+  .spinner .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+  }
+  
+  @-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+    20% { -webkit-transform: scaleY(1.0) }
+  }
+  
+  @keyframes sk-stretchdelay {
+    0%, 40%, 100% { 
+      transform: scaleY(0.4);
+      -webkit-transform: scaleY(0.4);
+    }  20% { 
+      transform: scaleY(1.0);
+      -webkit-transform: scaleY(1.0);
+    }
+  }
+```
+
+* Spinner.jsx:
+```sh
+import './Spinner.css'
+
+const Spinner = () => {
+  return (
+    <div className="spinner">
+      <div className="rect1"></div>
+      <div className="rect2"></div>
+      <div className="rect3"></div>
+      <div className="rect4"></div>
+      <div className="rect5"></div>
+    </div>
+  );
+};
+
+export default Spinner;
+```
+Este componete lo verás que está en el componete ListadoUsuarios.jsx
+
 ## Fuente
 Eh importado una tipografía para que el texto tenga otro diseño de letra:
 

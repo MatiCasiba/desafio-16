@@ -11,14 +11,13 @@ const Rutas = () => {
                 element: <Inicio />
             },
             {
-                path: '/ususarios',
+                path: '/usuarios',
                 element: <Usuarios />
             },
             {
-                path: '/nosostros',
+                path: '/nosotros',
                 element: <Nosotros />
             },
-            
 
         ]
     )
