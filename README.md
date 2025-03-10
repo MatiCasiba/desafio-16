@@ -126,8 +126,162 @@ const App = () => {
 }
 
 export default App
-
 ```
+
+### Ingresando datos en el formulario y mostrando en el backend
+Lo siguiente a hacer es que cuando el usuario ingrese información en el formulario, este se muestre en el listado de usuarios y se carga la info en el db.json
+
+* Función agregarUsuario en app.jsx
+```sh
+const App = () => {
+
+  const [usuarios, setUsuarios] = useState(null)
+  ...
+
+  const agregarUsuario = async (nuevoUsuario) => {
+    # Agrego el usuario en el backend
+    nuevoUsuario.edad = Number(nuevoUsuario.edad)
+    delete nuevoUsuario.id # borra la propiedad 'id' del objeto nuevoUsuario
+
+    try {
+      const res = await fetch(import.meta.env.VITE_BACKEND, {
+        method: 'POST',
+        headers: { 'content-type' : 'application/json' },
+        body: JSON.stringify(nuevoUsuario)
+      })
+
+      if(!res.ok){
+        throw new Error('No se pudo hacer la petición')
+      }
+      const usuarioAgregadoEnBackend = await res.json()
+
+      # Modifico el estado basado en el producto agregado en el backend
+      const nuevoEstadoUsuarios = [...usuarios, usuarioAgregadoEnBackend] # array nuevo = arrayViejo + nuevoUsuario
+      setUsuarios(nuevoEstadoUsuarios)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return (
+    <>
+      <Formulario
+        agregarUsuario={agregarUsuario}  # lo paso como prop al componente Formulario
+      />
+      <ListadoUsuarios 
+        usuarios={usuarios}
+      />
+    </>
+  )
+}
+
+export default App
+```
+
+* Recibiendo la prop desde el App.jsx y creando los eventos de cambio y entrega (submit):
+```sh
+import { useState } from "react"
+
+const Formulario = ({agregarUsuario}) => {
+
+  # estado inicial del formulario
+  const dataFormularioInicial = {
+    id: null,
+    nombre: '',
+    apellido: '',
+    edad: '',
+    puesto: ''
+  }
+  
+  #                                           ⬇️hook
+  const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)
+  # dataFormulario: guardará la info del formulario
+  # setDataFormulario: va a actualizar ese estado
+
+  # manejo de cambio en los inputs
+  const handleChange = (e) => {
+
+    const dataActualizada = {
+        ...dataFormulario,
+        [e.target.name]: e.target.value
+    }
+    # actualiza el estado con los nuevos valores del dataActualizada
+    setDataFormulario(dataActualizada)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault() # evita que el usuario recargue la página 
+
+    if (dataFormulario.id === null){ # estoy agragando un nuevo usuario
+        agregarUsuario(dataFormulario)
+        # llamo a agregarUsuario y le paso dataFormulario
+    }
+  }
+
+  return (
+    <>
+        <div className="max-w-lg m-auto mb-4">
+            <form 
+                className="bg-gray-100 border rounded-lg p-6"
+                onSubmit={handleSubmit}
+            >
+                
+                <label 
+                    ...
+                >
+                    Nombre
+                </label>
+                <input 
+                    ...
+                    name="nombre"
+                    onChange={handleChange}
+                    value={dataFormulario.nombre} 
+                />
+
+                <label 
+                    ...
+                >
+                    Apellido
+                </label>
+                <input 
+                    ...
+                    name="apellido"
+                    onChange={handleChange}
+                    value={dataFormulario.apellido}  
+                />
+
+                <label 
+                    ... 
+                >
+                    Edad
+                </label>
+                <input 
+                    ...
+                    onChange={handleChange}
+                    value={dataFormulario.edad}   
+                />
+
+                <label 
+                    ...
+                >
+                    Puesto
+                </label>
+                <input 
+                    ...
+                    name="puesto"
+                    onChange={handleChange}
+                    value={dataFormulario.puesto}  
+                />
+
+            </form>
+        </div>
+    </>
+  )
+}
+
+export default Formulario
+``` 
 
 ## Lista de usuarios
 En el componente ListadoUsuarios, se cargarán todos los datos que coloque el usuario dentro del formulario, este componente se encuentra en src/components/ListadoUsuarios.jsx. Primero empezaré estilizando, dividiendo las secciones nombre, apellido, edad y puesto:
