@@ -1,5 +1,10 @@
 
-const Fila = ({usuario}) => {
+const Fila = ({usuario, setUsuarioAEditar}) => {
+
+  const handleEditar = (usuario) => {
+    setUsuarioAEditar(usuario)
+  }
+
   return (
     <tr className="bg-white border-b border-gray-400">
         <td className="px-6 py-4">{usuario.nombre}</td>
@@ -8,12 +13,13 @@ const Fila = ({usuario}) => {
         <td className="px-6 py-4">{usuario.puesto}</td>
         <td className="px-6 py-4">
 
-            <button 
+            <button
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer mr-2"
             >
                 Ver
             </button>
             <button
+                onClick={()=> handleEditar(usuario)}
                 className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 cursor-pointer mr-2"
             >
                 Editar

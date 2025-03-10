@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const Formulario = ({agregarUsuario}) => {
+const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarUsuario}) => {
 
   const dataFormularioInicial = {
     id: null,
@@ -11,6 +11,10 @@ const Formulario = ({agregarUsuario}) => {
   }
 
   const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)
+
+  useEffect(()=>{
+    usuarioAEditar ? setDataFormulario(usuarioAEditar) : setDataFormulario(dataFormularioInicial)
+  }, [usuarioAEditar])
 
   const handleChange = (e) => {
 
@@ -30,6 +34,9 @@ const Formulario = ({agregarUsuario}) => {
 
   return (
     <>
+        <h2 className="text-2xl font-semibold my-4">
+            Formulario de {usuarioAEditar ? 'edición': 'carga'} de usuarios
+        </h2>
         <div className="max-w-lg m-auto mb-4">
             <form 
                 className="bg-gray-100 border rounded-lg p-6"
@@ -110,9 +117,9 @@ const Formulario = ({agregarUsuario}) => {
                 <div className="flex justify-between">
                     <button 
                         type="submit"
-                        className="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-800 cursor-pointer"
+                        className={`px-4 py-2 ${usuarioAEditar? 'bg-yellow-500': 'bg-green-500'} text-white font-bold rounded-lg ${usuarioAEditar? 'hover:bg-yellow-800': 'hover:bg-green-800'} cursor-pointer`}
                     >
-                        Subir
+                        { usuarioAEditar ? 'Editar' : 'Subir' }
                     </button>
                     <button 
                         type="reset"

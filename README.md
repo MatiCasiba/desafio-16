@@ -283,6 +283,141 @@ const Formulario = ({agregarUsuario}) => {
 export default Formulario
 ``` 
 
+### Editando el usuario en el formulario
+Lo siguiente que voy  a estar realizando, es crear una función para editar los datos en el formulario
+```sh
+const App = () => {
+
+  const [usuarios, setUsuarios] = useState(null)
+  const [usuarioAEditar, setUsuarioAEditar] = useState(null)
+
+  useEffect(()=> {
+    getAllUsers()
+  }, [])
+
+  const getAllUsers = async () => {
+    ...
+  }
+
+  const agregarUsuario = async (nuevoUsuario) => {
+    ...
+  }
+
+  const editarUsuario = async (usuarioEditado) => {
+    # hago la peticion para guardar el usuario editado
+    const urlEditar = import.meta.env.VITE_BACKEND + usuarioEditado.id
+
+    try {
+      usuarioEditado.edad = Number(usuarioEditado.edad)
+
+      const res = await fetch(urlEditar, {
+        method: 'PUT',
+        headers: { 'content-type' : 'application/json' },
+        body: JSON.stringify(usuarioEditado)
+      })
+
+      if(!res.ok){
+        throw new Error('No se pudo hacer la peticion')
+      }
+      
+      const productoEditadoBackend = await res.json()
+      //console.log(productoEditadoBackend);
+
+      # aviso a react que cambió lgo dentro del arrya de productos
+      const nuevoEstadoUsuarios = usuarios.map(user => user.id === usuarioEditado.id ? productoEditado : user)
+
+      setUsuarios(nuevoEstadoUsuarios)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  # esta función va a estar realizando la actualización en la base de datos
+
+  return (
+    <>
+      <Formulario # paso la funcion y
+        agregarUsuario={agregarUsuario}  
+        usuarioAEditar={usuarioAEditar} # va a indicar que usuario se está editando
+        setUsuarioAEditar={setUsuarioAEditar} # va a permitir actualizar el estado del usuario a editar
+        editarUsuario={editarUsuario}
+      />
+
+      <ListadoUsuarios 
+        ...
+      />
+    </>
+  )
+}
+
+export default App
+```
+
+* Recibo las props de App.jsx
+```sh
+const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarUsuario}) => {
+
+  const dataFormularioInicial = {
+    id: null,
+    nombre: '',
+    apellido: '',
+    edad: '',
+    puesto: ''
+  }
+
+  const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)
+
+  useEffect(()=>{
+    usuarioAEditar ? setDataFormulario(usuarioAEditar) : setDataFormulario(dataFormularioInicial)
+  }, [usuarioAEditar])
+  # se va a ejecutar cada vez que el usuarioAEditar cambia
+  # usuarioAEditar tiene una valor, si se seleccionó un usuario para editar, el formulario se llena con los datos de ese usuario 
+  # si este usuario a editar es null, el formulario se resetea a los valores iniciales
+
+  const handleChange = (e) => {
+    ...
+  }
+
+  const handleSubmit = (e) => {
+    ...
+  }
+
+  return (
+    <>
+        # estaré estilizando el formulario y el botón
+        <h2 className="text-2xl font-semibold my-4">
+            # dependiendo la acción del usuario, cambiará la palabra a edición o carga
+            Formulario de {usuarioAEditar ? 'edición': 'carga'} de usuarios
+        </h2>
+        <div className="max-w-lg m-auto mb-4">
+            <form 
+                ...
+            >
+                ...
+                <div className="flex justify-between">
+                    # respecto también a lo que elija el usuario, cambiará el botón, tanto su texto como color
+                    <button 
+                        type="submit"
+                        className={`px-4 py-2 ${usuarioAEditar? 'bg-yellow-500': 'bg-green-500'} text-white font-bold rounded-lg ${usuarioAEditar? 'hover:bg-yellow-800': 'hover:bg-green-800'} cursor-pointer`}
+                    >
+                        { usuarioAEditar ? 'Editar' : 'Subir' }
+                    </button>
+
+                    <button 
+                        ...
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </>
+  )
+}
+
+export default Formulario
+```
+
 ## Lista de usuarios
 En el componente ListadoUsuarios, se cargarán todos los datos que coloque el usuario dentro del formulario, este componente se encuentra en src/components/ListadoUsuarios.jsx. Primero empezaré estilizando, dividiendo las secciones nombre, apellido, edad y puesto:
 ```sh
@@ -457,6 +592,100 @@ const Fila = ({usuario}) => {
 }
 
 export default Fila
+```
+### Dando función al botón de editar
+El botón de editar que contengo en el componente Fila.jsx, va a tener función, este botón lo verás que está cargado en el listado al lado de los usuarios, que contiene  3 botones
+```sh
+const Fila = ({usuario, setUsuarioAEditar}) => {
+
+  # este se encargará de hacer funcionar el botón del usuario que quiera editar, para que los datos de este luego sean cargados en el formulario
+  const handleEditar = (usuario) => {
+    setUsuarioAEditar(usuario)
+  }
+
+  return (
+    <tr className="bg-white border-b border-gray-400">
+        ...
+
+            <button
+                ...
+            >
+                Ver
+            </button>
+            <button
+                onClick={()=> handleEditar(usuario)} # llamo a esa función y lo coloco en el evento del onClick
+                className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 cursor-pointer mr-2"
+            >
+                Editar
+            </button>
+            <button 
+                ...
+            >
+                Eliminar
+            </button>
+
+        </td>
+    </tr>
+  )
+}
+
+export default Fila
+```
+La prop setUsuario la voy a estar recibiendo de App.jsx, pero esta prop pasa antes por ListadoUsarios.jsx, dentro de este está el componente Fila.jsx, le pasa la prop y luego lo vamos a estar recibiendo:
+```sh
+# App.jsx
+const App = () => {
+
+  const [usuarios, setUsuarios] = useState(null)
+  const [usuarioAEditar, setUsuarioAEditar] = useState(null)
+
+  ...
+
+  return (
+    <>
+      <Formulario
+        ...
+      />
+      <ListadoUsuarios 
+        usuarios={usuarios}
+        setUsuarioAEditar={setUsuarioAEditar} # la paso al listado
+      />
+    </>
+  )
+}
+
+export default App
+
+# ListadoUsuarios.jsx
+#                                   ⬇️lo recibo
+const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
+  return (
+    <>
+        {usuarios ? (
+          <table className='w-full text-sm text-left text-gray-500'>
+            <thead className='text-xs text-gray-800 uppercase bg-gray-200'>
+                ...
+            </thead>
+            <tbody>
+              {
+                usuarios.map((usuario)=> (
+                  <Fila 
+                    usuario={usuario}
+                    key={usuario.id}
+                    setUsuarioAEditar={setUsuarioAEditar} # le paso la prop a fila para que luego este la reciba y se la pueda usar
+                  />
+                ))
+              }
+            </tbody>
+          </table>
+        ) : (
+          <Spinner />
+        )}
+    </>
+  )
+}
+
+export default ListadoUsuarios
 ```
 
 ## Creando el spinner

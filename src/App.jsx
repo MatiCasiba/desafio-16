@@ -6,6 +6,7 @@ import ListadoUsuarios from "./components/ListadoUsuarios"
 const App = () => {
 
   const [usuarios, setUsuarios] = useState(null)
+  const [usuarioAEditar, setUsuarioAEditar] = useState(null)
 
   useEffect(()=> {
     getAllUsers()
@@ -50,13 +51,46 @@ const App = () => {
     }
   }
 
+  const editarUsuario = async (usuarioEditado) => {
+ 
+    const urlEditar = import.meta.env.VITE_BACKEND + usuarioEditado.id
+
+    try {
+      usuarioEditado.edad = Number(usuarioEditado.edad)
+
+      const res = await fetch(urlEditar, {
+        method: 'PUT',
+        headers: { 'content-type' : 'application/json' },
+        body: JSON.stringify(usuarioEditado)
+      })
+
+      if(!res.ok){
+        throw new Error('No se pudo hacer la peticion')
+      }
+      
+      const productoEditadoBackend = await res.json()
+      //console.log(productoEditadoBackend);
+
+      const nuevoEstadoUsuarios = usuarios.map(user => user.id === usuarioEditado.id ? productoEditado : user)
+
+      setUsuarios(nuevoEstadoUsuarios)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
       <Formulario
         agregarUsuario={agregarUsuario}  
+        usuarioAEditar={usuarioAEditar}
+        setUsuarioAEditar={setUsuarioAEditar}
+        editarUsuario={editarUsuario}
       />
       <ListadoUsuarios 
         usuarios={usuarios}
+        setUsuarioAEditar={setUsuarioAEditar}
       />
     </>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import Fila from './Fila'
 import Spinner from './Spinner'
 
-const ListadoUsuarios = ({usuarios}) => {
+const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
   return (
     <>
         {usuarios ? (
@@ -21,6 +21,7 @@ const ListadoUsuarios = ({usuarios}) => {
                   <Fila 
                     usuario={usuario}
                     key={usuario.id}
+                    setUsuarioAEditar={setUsuarioAEditar}
                   />
                 ))
               }
