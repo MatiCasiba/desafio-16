@@ -688,6 +688,162 @@ const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
 export default ListadoUsuarios
 ```
 
+### Dando función al botón de eliminar
+Tendremos también el botón de eliminar los usuarios, que no solo los elimina de la tabla que vemos en pantalla, sino también que se elimina del backend, toda la data que se cargó anteriormente, será eliminado con esta función. Primero lo creo en App.jsx y luego lo estaré pasando por props a Listado.jsx para luego llegar a Fila.jsx:
+```sh
+import { useEffect, useState } from "react"
+import Formulario from "./components/Formulario"
+import ListadoUsuarios from "./components/ListadoUsuarios"
+
+
+const App = () => {
+
+  ...
+
+  const borrarUsuario = async (id) => {
+    # Elimino el usuario por  id del backend
+    const urlBorrado = import.meta.env.VITE_BACKEND + id
+    try {
+      const res = await fetch(urlBorrado, {
+        method: 'DELETE'
+      })
+
+      if(!res.ok){
+        throw new Error('No se pudo hacer la petición')
+      }
+      const productoEliminadoDelBackend = await res.json()
+      //console.log(productoEliminadoDelBackend);
+
+    } catch (error) {
+      console.error(error)
+    }
+
+    # Actualizo
+    const nuevoEstadoUsuarios = usuarios.filter( user => user.id !== id)
+    setUsuarios(nuevoEstadoUsuarios)
+  }
+
+  return (
+    <>
+      <Formulario
+        ...
+      />
+      <ListadoUsuarios 
+        usuarios = {usuarios}
+        borrarUsuario = {borrarUsuario}
+        setUsuarioAEditar = {setUsuarioAEditar}
+      />
+    </>
+  )
+}
+
+export default App
+```
+* Recibo la prop en Listado.jsx:
+```sh
+const ListadoUsuarios = ({usuarios, borrarUsuario,setUsuarioAEditar}) => {
+  return (
+    <>
+        {usuarios ? (
+          <table className='w-full text-sm text-left text-gray-500'>
+            <thead className='text-xs text-gray-800 uppercase bg-gray-200'>
+                ...
+            </thead>
+            <tbody>
+              {
+                usuarios.map((usuario)=> (
+                  <Fila 
+                    usuario={usuario}
+                    key={usuario.id}
+                    borrarUsuario={borrarUsuario} # y se la paso a Fila.jsx
+                    setUsuarioAEditar={setUsuarioAEditar}
+                  />
+                ))
+              }
+            </tbody>
+          </table>
+        ) : (
+          <Spinner />
+        )}
+    </>
+  )
+}
+
+export default ListadoUsuarios
+```
+
+* Fila.jsx -> acá no solo funcionará el botón de eliminar, sino que también lanzarán mensajes. Para esto eh instalado una librería:
+```sh
+npm install sweetalert2
+```
+* Evento onClick + implementación del mensaje
+```sh
+import Swal from "sweetalert2";
+
+#                       ⬇️recibo la prop
+const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
+
+  # se encargará de hacer funcionar el boton de borrar y lanzará un mensaje cada vez que este sea seleccionado
+  const handleEliminar = (id) => {
+    Swal.fire({
+        title: "Estás seguro?",
+        text: "No podrás revertirlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "si, eliminar!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          borrarUsuario(id) # la uso
+          Swal.fire({
+            title: "ELIMINADO!",
+            text: "El usuario se ha eliminado.",
+            icon: "success"
+          });
+        } else {
+          Swal.fire({
+            title: "No lo borraste!",
+            text: "El producto no se borro",
+            icon: "info"
+          });
+        }
+      });
+  }
+
+  ...
+
+  return (
+    <tr className="bg-white border-b border-gray-400">
+        ...
+        <td className="px-6 py-4">
+
+            <button
+                ...
+            >
+                Ver
+            </button>
+            <button
+                ...
+            >
+                Editar
+            </button>
+
+            <button
+                onClick={()=> handleEliminar(usuario.id)} 
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer mr-2"
+            >
+                Eliminar
+            </button>
+
+        </td>
+    </tr>
+  )
+}
+
+export default Fila
+```
+
 ## Creando el spinner
 El spinner será la animación de carga en caso de que no se veán los usuarios en la tabla:
 * Spinner.css:

@@ -2,7 +2,7 @@ import React from 'react'
 import Fila from './Fila'
 import Spinner from './Spinner'
 
-const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
+const ListadoUsuarios = ({usuarios, borrarUsuario,setUsuarioAEditar}) => {
   return (
     <>
         {usuarios ? (
@@ -13,6 +13,7 @@ const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
                     <th className="px-6 py-3">Apellido</th>
                     <th className="px-6 py-3">Edad</th>
                     <th className="px-6 py-3">Puesto</th>
+                    <th className='px-6 py-3'>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@ const ListadoUsuarios = ({usuarios, setUsuarioAEditar}) => {
                   <Fila 
                     usuario={usuario}
                     key={usuario.id}
+                    borrarUsuario={borrarUsuario}
                     setUsuarioAEditar={setUsuarioAEditar}
                   />
                 ))

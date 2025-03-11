@@ -80,17 +80,40 @@ const App = () => {
     }
   }
 
+  const borrarUsuario = async (id) => {
+
+    const urlBorrado = import.meta.env.VITE_BACKEND + id
+    try {
+      const res = await fetch(urlBorrado, {
+        method: 'DELETE'
+      })
+
+      if(!res.ok){
+        throw new Error('No se pudo hacer la petición')
+      }
+      const productoEliminadoDelBackend = await res.json()
+      //console.log(productoEliminadoDelBackend);
+
+    } catch (error) {
+      console.error(error)
+    }
+
+    const nuevoEstadoUsuarios = usuarios.filter( user => user.id !== id)
+    setUsuarios(nuevoEstadoUsuarios)
+  }
+
   return (
     <>
       <Formulario
-        agregarUsuario={agregarUsuario}  
-        usuarioAEditar={usuarioAEditar}
-        setUsuarioAEditar={setUsuarioAEditar}
-        editarUsuario={editarUsuario}
+        agregarUsuario = {agregarUsuario}  
+        usuarioAEditar = {usuarioAEditar}
+        setUsuarioAEditar = {setUsuarioAEditar}
+        editarUsuario = {editarUsuario}
       />
       <ListadoUsuarios 
-        usuarios={usuarios}
-        setUsuarioAEditar={setUsuarioAEditar}
+        usuarios = {usuarios}
+        borrarUsuario = {borrarUsuario}
+        setUsuarioAEditar = {setUsuarioAEditar}
       />
     </>
   )

@@ -1,5 +1,33 @@
+import Swal from "sweetalert2";
 
-const Fila = ({usuario, setUsuarioAEditar}) => {
+const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
+
+  const handleEliminar = (id) => {
+    Swal.fire({
+        title: "Estás seguro?",
+        text: "No podrás revertirlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "si, eliminar!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          borrarUsuario(id)
+          Swal.fire({
+            title: "ELIMINADO!",
+            text: "El usuario se ha eliminado.",
+            icon: "success"
+          });
+        } else {
+          Swal.fire({
+            title: "No lo borraste!",
+            text: "El producto no se borro",
+            icon: "info"
+          });
+        }
+      });
+  }
 
   const handleEditar = (usuario) => {
     setUsuarioAEditar(usuario)
@@ -24,7 +52,8 @@ const Fila = ({usuario, setUsuarioAEditar}) => {
             >
                 Editar
             </button>
-            <button 
+            <button
+                onClick={()=> handleEliminar(usuario.id)} 
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer mr-2"
             >
                 Eliminar
