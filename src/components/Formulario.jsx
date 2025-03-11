@@ -32,6 +32,11 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
     }
   }
 
+  const hadnleReset = () => {
+    setDataFormulario(dataFormularioInicial)
+    setUsuarioAEditar(null)
+  }
+
   return (
     <>
         <h2 className="text-2xl font-semibold my-4">
@@ -124,6 +129,7 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
                     <button 
                         type="reset"
                         className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-800 cursor-pointer"
+                        onClick={hadnleReset}
                     >
                         Cancelar
                     </button>

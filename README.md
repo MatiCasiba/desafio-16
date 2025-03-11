@@ -418,6 +418,69 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
 export default Formulario
 ```
 
+### Reseteando los inputs del formulario
+Lo que voy a querer, es que cuando el usuario esté ingresando información en los inputs y se arrepiente antes de subir, seleccioone el botón cancelar y se vacíen los inputs, lo mismo para cuando quiera editar y luego se arrepiente, cancela, se vacían los inputs y no solo eso, sino que tambíen vuelve el botón de Subir, osea que se inicia todo de 0:
+```sh
+import { useEffect, useState } from "react"
+
+const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarUsuario}) => {
+
+  const dataFormularioInicial = {
+    ...
+  }
+
+  const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)
+
+  useEffect(()=>{
+    usuarioAEditar ? setDataFormulario(usuarioAEditar) : setDataFormulario(dataFormularioInicial)
+  }, [usuarioAEditar])
+
+  const handleChange = (e) => {
+    ...
+  }
+
+  const handleSubmit = (e) => {
+    ...
+  }
+
+  # es el encargado de volver todos a su valor inicial, esta función se lo paso al botón de cancelar
+  const hadnleReset = () => {
+    setDataFormulario(dataFormularioInicial)
+    setUsuarioAEditar(null)
+  }
+
+  return (
+    <>
+        <h2 className="text-2xl font-semibold my-4">
+            Formulario de {usuarioAEditar ? 'edición': 'carga'} de usuarios
+        </h2>
+        <div className="max-w-lg m-auto mb-4">
+            <form 
+                className="bg-gray-100 border rounded-lg p-6"
+                onSubmit={handleSubmit}
+            >
+                
+                ...
+
+                <div className="flex justify-between">
+                    ...
+                    <button 
+                        type="reset"
+                        className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-800 cursor-pointer"
+                        onClick={hadnleReset} # función para el reseteo
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </>
+  )
+}
+
+export default Formulario
+```
+
 ## Lista de usuarios
 En el componente ListadoUsuarios, se cargarán todos los datos que coloque el usuario dentro del formulario, este componente se encuentra en src/components/ListadoUsuarios.jsx. Primero empezaré estilizando, dividiendo las secciones nombre, apellido, edad y puesto:
 ```sh
