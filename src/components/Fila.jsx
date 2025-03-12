@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
+
+  const navigate = useNavigate()
 
   const handleEliminar = (id) => {
     Swal.fire({
@@ -33,6 +36,10 @@ const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
     setUsuarioAEditar(usuario)
   }
 
+  const handleVer = (id) => {
+    navigate(`/usuarios/detalle/${id}`)
+  }
+
   return (
     <tr className="bg-white border-b border-gray-400">
         <td className="px-6 py-4">{usuario.nombre}</td>
@@ -42,6 +49,7 @@ const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
         <td className="px-6 py-4">
 
             <button
+                onClick={()=> handleVer(usuario.id)}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer mr-2"
             >
                 Ver

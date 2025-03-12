@@ -907,6 +907,129 @@ const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
 export default Fila
 ```
 
+### Mostrando detalle del usuario
+Al seleccionar el botón "Ver" estaremos viendo solamente los detalles de ese único usuario seleccionado, para esto eh creado en la carpeta pages un archvio UsuarioDetalle.jsx, para acceder a este mediante el botón tendré una ruta que la eh hecho en Rutas.jsx (que se encuentra dentro de la carpeta routes) y esa misma ruta la colocaré en la función de handleVer, que será asignada al botón:
+```sh
+# Fila.jsx
+import { useNavigate } from "react-router";
+...
+const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
+
+  const navigate = useNavigate()
+
+  ...
+
+  const handleVer = (id) => {
+    navigate(`/usuarios/detalle/${id}`)
+  }
+
+  return (
+    <tr className="bg-white border-b border-gray-400">
+        ...
+        <td className="px-6 py-4">
+
+            <button
+                onClick={()=> handleVer(usuario.id)} # contendrá la ruta
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer mr-2"
+            >
+                Ver
+            </button>
+            ...
+
+        </td>
+    </tr>
+  )
+}
+export default Fila
+```
+* UsuariosDetalle.jsx -> estaré mostrando la info del usuario seleccionado, lo trabajé de la siguiente forma:
+```sh
+import { useEffect, useState } from "react"
+import { useParams } from "react-router"
+import Spinner from "../components/Spinner"
+
+const UsuariosDetalle = () => {
+
+  const {id} = useParams() # extraigo el id de los parámetros de la URL
+  const [usuarioDetalle, setUsuarioDetalle] = useState(null)
+  # creo une estado para almacenar los datois del usuario
+
+  useEffect(()=> {
+    getOne(id)
+  }, [])
+  # se ejecuta solo una vez, cuando se monta el componente, este llama a getOne(id)
+
+  # esta función se va a encargar de obtener los datos del usuario seleccionado desde el backend
+  const getOne = async (id) => {
+    const urlGetOne = import.meta.env.VITE_BACKEND + id
+
+    try {
+        const res = await fetch(urlGetOne)
+        if(!res.ok){
+            throw new Error('No se pudo obntener el usuario')
+        }
+
+        const data = await res.json()
+        setUsuarioDetalle(data)
+
+    } catch (error) {
+        console.error(error)
+    }
+  }
+
+  return (
+    <>
+        <h1>Usuario detalle</h1>
+        {
+            usuarioDetalle ?
+                (
+                    <>
+                        <h2>El nombre del usuario: {usuarioDetalle.nombre}</h2>
+                        <p>El apellido del usuario: {usuarioDetalle.apellido}</p>
+                        <p>La edad del usuario: {usuarioDetalle.edad}</p>
+                        <p>El puesto del usuario: {usuarioDetalle.puesto}</p>
+                    </>
+                ) : (
+                    <Spinner /> # se mostrará la animación de carga en caso de que la info no esté
+                )
+        }
+    </>
+  )
+}
+
+export default UsuariosDetalle
+```
+* colocando la misma ruta que hay en Fila.jsx dentro de Rutas.jsx:
+```sh
+import { useRoutes } from "react-router"
+...
+import UsuariosDetalle from "../pages/UsuariosDetalle"
+
+const Rutas = () => {
+    const rutasApp = useRoutes(
+        [
+            {
+                ...
+            },
+            {
+                ...
+            },
+            {
+                path: '/usuarios/detalle/:id',
+                element: <UsuariosDetalle />
+            },
+            {
+                ...
+            }
+
+        ]
+    )
+    return rutasApp
+}
+
+export default Rutas
+```
+
 ## Creando el spinner
 El spinner será la animación de carga en caso de que no se veán los usuarios en la tabla:
 * Spinner.css:
@@ -1142,3 +1265,4 @@ useTitutlo('Nosotros')
 
 ```
 Cada vez que lo quiera usar, siempre lo voy a tener que inportar en el componete que lo queira.
+
