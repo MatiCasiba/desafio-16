@@ -1115,3 +1115,30 @@ const Navbar = () => {
 export default Navbar
 ```
 Entonces el usuario podrá ver la barrra de navegación en la parte superiror y podrá acceder a donde necesite.
+
+## useTitulo
+Eh creado el hook useTitulo para usarlo en los componentes de la carpeta page, este hook lo que hac es cambiar el titulo de las pestañas, si se encuentra en inicio, la pestaña tendrá el titulo de MatiDev - Inicio lo mismo para usuario.jsx y nosotros.jsx:
+
+```sh
+# useTitulo.jsx
+import { useEffect } from "react"
+
+const useTitutlo = (titulo) => {
+  useEffect(()=> {
+    document.title = `MatiDev - ${titulo}`
+  })
+}
+
+export default useTitutlo
+
+# En Inicio.jsx lo verás:
+useTitutlo('Inicio')
+
+# En Usuario.jsx:
+useTitutlo('Usuario')
+
+# En nosotro.jsx
+useTitutlo('Nosotros')
+
+```
+Cada vez que lo quiera usar, siempre lo voy a tener que inportar en el componete que lo queira.
