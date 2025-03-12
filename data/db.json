@@ -1,18 +1,18 @@
 {
-    "usuarios": [
-        {
-            "id": "1",
-            "nombre": "Matias",
-            "apellido": "Casiba",
-            "edad": 23,
-            "puesto": "Front End Developer"
-        },
-        {
-            "id": "2",
-            "nombre": "Pablo",
-            "apellido": "Yusepe",
-            "edad": 22,
-            "puesto": "Gamer Developer"
-        }
-    ]
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Matias",
+      "apellido": "Casiba",
+      "edad": 23,
+      "puesto": "Front End Developer"
+    },
+    {
+      "id": "2",
+      "nombre": "Pablo",
+      "apellido": "Yusepe",
+      "edad": 22,
+      "puesto": "Gamer Developer"
+    }
+  ]
 }
