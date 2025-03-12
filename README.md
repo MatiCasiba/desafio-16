@@ -999,6 +999,26 @@ const UsuariosDetalle = () => {
 
 export default UsuariosDetalle
 ```
+* Le di estilo con tailwind y usando elemento strong, a lo que se encuentra dentro del return:
+```sh
+    <>
+        <h1 className="font-bold text-center text-4xl my-5">Usuario detalle</h1>
+        {
+            usuarioDetalle ?
+                (
+                    <>
+                        <p className="py-2 text-2xl">El nombre del usuario: <strong>{usuarioDetalle.nombre}</strong></p>
+                        <p className="py-2 text-2xl">El apellido del usuario: <strong>{usuarioDetalle.apellido}</strong></p>
+                        <p className="py-2 text-2xl">La edad del usuario: <strong>{usuarioDetalle.edad}</strong></p>
+                        <p className="py-2 text-2xl">El puesto del usuario: <strong>{usuarioDetalle.puesto}</strong></p>
+                    </>
+                ) : (
+                    <Spinner />
+                )
+        }
+    </>
+```
+
 * colocando la misma ruta que hay en Fila.jsx dentro de Rutas.jsx:
 ```sh
 import { useRoutes } from "react-router"

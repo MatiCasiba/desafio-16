@@ -30,15 +30,15 @@ const UsuariosDetalle = () => {
 
   return (
     <>
-        <h1>Usuario detalle</h1>
+        <h1 className="font-bold text-center text-4xl my-5">Usuario detalle</h1>
         {
             usuarioDetalle ?
                 (
                     <>
-                        <h2>El nombre del usuario: {usuarioDetalle.nombre}</h2>
-                        <p>El apellido del usuario: {usuarioDetalle.apellido}</p>
-                        <p>La edad del usuario: {usuarioDetalle.edad}</p>
-                        <p>El puesto del usuario: {usuarioDetalle.puesto}</p>
+                        <p className="py-2 text-2xl">El nombre del usuario: <strong>{usuarioDetalle.nombre}</strong></p>
+                        <p className="py-2 text-2xl">El apellido del usuario: <strong>{usuarioDetalle.apellido}</strong></p>
+                        <p className="py-2 text-2xl">La edad del usuario: <strong>{usuarioDetalle.edad}</strong></p>
+                        <p className="py-2 text-2xl">El puesto del usuario: <strong>{usuarioDetalle.puesto}</strong></p>
                     </>
                 ) : (
                     <Spinner />
