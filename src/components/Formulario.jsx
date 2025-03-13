@@ -7,7 +7,8 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
     nombre: '',
     apellido: '',
     edad: '',
-    puesto: ''
+    puesto: '',
+    imagen: ''
   }
 
   const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)
@@ -29,7 +30,10 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
     e.preventDefault()
     if (dataFormulario.id === null){
         agregarUsuario(dataFormulario)
+    } else {
+        editarUsuario(dataFormulario)
     }
+    hadnleReset()
   }
 
   const hadnleReset = () => {
@@ -116,6 +120,24 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
                     name="puesto"
                     onChange={handleChange}
                     value={dataFormulario.puesto}  
+                />
+
+                {/* CAMPO IMÁGEN */}
+                <lable
+                    htmlFor="lbl-image"
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
+                >
+                    Imagen
+                </lable>
+                <input     
+                    type="text"
+                    id="lbl-image"
+                    placeholder="icons/mark-1.webp"
+                    className="w-full bg-white p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    name="image"
+                    onChange={handleChange}
+                    value={dataFormulario.image}
+                     
                 />
 
                 {/* BOTONES */}

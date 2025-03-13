@@ -440,7 +440,13 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
   }
 
   const handleSubmit = (e) => {
-    ...
+    e.preventDefault()
+    if (dataFormulario.id === null){
+        agregarUsuario(dataFormulario)
+    } else {
+        editarUsuario(dataFormulario)
+    }
+    hadnleReset()
   }
 
   # es el encargado de volver todos a su valor inicial, esta función se lo paso al botón de cancelar
@@ -1286,3 +1292,117 @@ useTitutlo('Nosotros')
 ```
 Cada vez que lo quiera usar, siempre lo voy a tener que inportar en el componete que lo queira.
 
+## El usuario agrega imágen
+El usuario a parte de subir toda su data, podrá subir una imágen cargada en este proyecto, se lo estaré indicando como debe escribir la dirección mediante un placeholder en el input (habrán 12 imagenes), este se subirá al db.json y se mostrará la imagen en el listado, lo verás estará en un formato circulo cuando lo hagas:
+
+* Formulario.jsx -> estaré creando el campo de imágen
+```sh
+import { useEffect, useState } from "react"
+
+const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarUsuario}) => {
+
+  const dataFormularioInicial = {
+    id: null,
+    nombre: '',
+    apellido: '',
+    edad: '',
+    puesto: '',
+    imagen: '' # nuevo campo imagen
+  }
+
+  ...
+
+  return (
+    <>
+        <h2 className="text-2xl font-semibold my-4">
+            Formulario de {usuarioAEditar ? 'edición': 'carga'} de usuarios
+        </h2>
+        <div className="max-w-lg m-auto mb-4">
+            <form 
+                className="bg-gray-100 border rounded-lg p-6"
+                onSubmit={handleSubmit}
+            >
+                
+                ...
+
+                {/* CAMPO IMÁGEN */}
+                <lable
+                    htmlFor="lbl-image"
+                    className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
+                >
+                    Imagen
+                </lable>
+                <input     
+                    type="text"
+                    id="lbl-image"
+                    placeholder="icons/mark-1.webp"
+                    className="w-full bg-white p-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    name="image"
+                    onChange={handleChange}
+                    value={dataFormulario.image} 
+                />
+
+                {/* BOTONES */}
+                <div className="flex justify-between">
+                    ...
+                </div>
+            </form>
+        </div>
+    </>
+  )
+}
+
+export default Formulario
+```
+
+* ListadoUsuarios.jsx -> Agrego una nueva columna
+```sh
+            <thead className='text-xs text-gray-800 uppercase bg-gray-200'>
+                <tr>
+                    <th className='px-6 py-3'>Imagen</th>
+                    ...  
+                </tr>
+            </thead>
+```
+
+* Fila.jsx -> lo que se hará acá es agregar esa imagen en el cuerpo de la tabla, osea el tbody, así que trabajaremos eso en este componente:
+```sh
+const Fila = ({usuario, borrarUsuario, setUsuarioAEditar}) => {
+
+  ...
+
+  return (
+    <tr className="bg-white border-b border-gray-400">
+        <td className="px-6 py-4">
+          <img 
+            src={`/${usuario.image}`} 
+            alt={usuario.nombre}
+            className="w-12 h-12 rounded-full object-cover" 
+          />
+        </td>
+        ...
+        <td className="px-6 py-4">
+
+            <button
+                ...
+            >
+                Ver
+            </button>
+            <button
+                ...
+            >
+                Editar
+            </button>
+            <button
+                ...
+            >
+                Eliminar
+            </button>
+
+        </td>
+    </tr>
+  )
+}
+
+export default Fila
+```

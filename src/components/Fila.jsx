@@ -42,6 +42,13 @@ const Fila = ({usuario, borrarUsuario,setUsuarioAEditar}) => {
 
   return (
     <tr className="bg-white border-b border-gray-400">
+        <td className="px-6 py-4">
+          <img 
+            src={`/${usuario.image}`} 
+            alt={usuario.nombre}
+            className="w-12 h-12 rounded-full object-cover" 
+          />
+        </td>
         <td className="px-6 py-4">{usuario.nombre}</td>
         <td className="px-6 py-4">{usuario.apellido}</td>
         <td className="px-6 py-4">{usuario.edad}</td>
