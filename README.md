@@ -1407,3 +1407,110 @@ const Fila = ({usuario, borrarUsuario, setUsuarioAEditar}) => {
 
 export default Fila
 ```
+
+## Uso de mockAPI
+Dejaré de usar de url el import.meta.env.VITE_BACKEND, lo reemplazaré por una url de mockAPI que me genera de manera random usuarios, este cambio está en el App.jsx:
+
+```sh
+import { useEffect, useState } from "react"
+import Formulario from "./components/Formulario"
+import ListadoUsuarios from "./components/ListadoUsuarios"
+
+
+const App = () => {
+
+  const [usuarios, setUsuarios] = useState(null)
+  const [usuarioAEditar, setUsuarioAEditar] = useState(null)
+
+  const urlMockapi = 'https://67d47c1dd2c7857431edce6d.mockapi.io/apis/v1/users/' # uso esta dirección
+
+  useEffect(()=> {
+    getAllUsers()
+  }, [])
+
+  const getAllUsers = async () => {
+    try {
+      const res = await fetch(urlMockapi)
+      if(!res.ok){
+        ...
+      }
+      ...
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const agregarUsuario = async (nuevoUsuario) => {
+    nuevoUsuario.edad = Number(nuevoUsuario.edad)
+    delete nuevoUsuario.id
+
+    try {
+      const res = await fetch(urlMockapi, {
+        ...
+      })
+
+      if(!res.ok){
+        ...
+      }
+      ...
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const editarUsuario = async (usuarioEditado) => {
+ 
+    const urlEditar = urlMockapi + usuarioEditado.id
+
+    try {
+      usuarioEditado.edad = Number(usuarioEditado.edad)
+
+      const res = await fetch(urlEditar, {
+        ...
+      })
+
+      if(!res.ok){
+       ...
+      }
+
+      ...
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const borrarUsuario = async (id) => {
+
+    const urlBorrado = urlMockapi + id
+    try {
+      ...
+      })
+
+      if(!res.ok){
+        ...
+      }
+      ...
+
+    } catch (error) {
+      console.error(error)
+    }
+
+    ...
+  }
+
+  return (
+    <>
+      <Formulario
+        ...
+      <ListadoUsuarios 
+        ...
+    </>
+  )
+}
+
+export default App
+
+```

@@ -8,7 +8,7 @@ const App = () => {
   const [usuarios, setUsuarios] = useState(null)
   const [usuarioAEditar, setUsuarioAEditar] = useState(null)
 
-  //const urlMockapi = 'https://67d47c1dd2c7857431edce6d.mockapi.io/apis/v1/users'
+  const urlMockapi = 'https://67d47c1dd2c7857431edce6d.mockapi.io/apis/v1/users/'
 
   useEffect(()=> {
     getAllUsers()
@@ -16,7 +16,7 @@ const App = () => {
 
   const getAllUsers = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND)
+      const res = await fetch(urlMockapi)
       if(!res.ok){
         throw new Error('No se pudo realizar la petición')
       }
@@ -34,7 +34,7 @@ const App = () => {
     delete nuevoUsuario.id
 
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND, {
+      const res = await fetch(urlMockapi, {
         method: 'POST',
         headers: { 'content-type' : 'application/json' },
         body: JSON.stringify(nuevoUsuario)
@@ -55,7 +55,7 @@ const App = () => {
 
   const editarUsuario = async (usuarioEditado) => {
  
-    const urlEditar = import.meta.env.VITE_BACKEND + usuarioEditado.id
+    const urlEditar = urlMockapi + usuarioEditado.id
 
     try {
       usuarioEditado.edad = Number(usuarioEditado.edad)
@@ -85,7 +85,7 @@ const App = () => {
 
   const borrarUsuario = async (id) => {
 
-    const urlBorrado = import.meta.env.VITE_BACKEND + id
+    const urlBorrado = urlMockapi + id
     try {
       const res = await fetch(urlBorrado, {
         method: 'DELETE'

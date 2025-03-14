@@ -8,7 +8,7 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
     apellido: '',
     edad: '',
     puesto: '',
-    imagen: ''
+    image: ''
   }
 
   const [dataFormulario, setDataFormulario] = useState(dataFormularioInicial)

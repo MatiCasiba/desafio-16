@@ -5,14 +5,24 @@
       "nombre": "Matias",
       "apellido": "Casiba",
       "edad": 23,
-      "puesto": "Front End Developer"
+      "puesto": "Front End Developer",
+      "image": ""
     },
     {
       "id": "2",
       "nombre": "Pablo",
       "apellido": "Yusepe",
       "edad": 22,
-      "puesto": "Gamer Developer"
+      "puesto": "Gamer Developer",
+      "image": ""
+    },
+    {
+      "id": "670d",
+      "nombre": "Thomas",
+      "apellido": "Shelby",
+      "edad": 23,
+      "puesto": "Profesor de Historia",
+      "image": "icons/mark-11.webp"
     }
   ]
 }
