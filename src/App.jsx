@@ -8,6 +8,8 @@ const App = () => {
   const [usuarios, setUsuarios] = useState(null)
   const [usuarioAEditar, setUsuarioAEditar] = useState(null)
 
+  //const urlMockapi = 'https://67d47c1dd2c7857431edce6d.mockapi.io/apis/v1/users'
+
   useEffect(()=> {
     getAllUsers()
   }, [])
@@ -68,10 +70,11 @@ const App = () => {
         throw new Error('No se pudo hacer la peticion')
       }
       
-      const productoEditadoBackend = await res.json()
+      const usuarioEditadoBackend = await res.json()
       //console.log(productoEditadoBackend);
 
-      const nuevoEstadoUsuarios = usuarios.map(user => user.id === usuarioEditado.id ? productoEditado : user)
+      const nuevoEstadoUsuarios = usuarios.map(user => 
+        user.id === usuarioEditado.id ? usuarioEditado : user)
 
       setUsuarios(nuevoEstadoUsuarios)
 
@@ -91,8 +94,8 @@ const App = () => {
       if(!res.ok){
         throw new Error('No se pudo hacer la petición')
       }
-      const productoEliminadoDelBackend = await res.json()
-      //console.log(productoEliminadoDelBackend);
+      const usuarioEliminadoDelBackend = await res.json()
+      //console.log(usuarioEliminadoDelBackend);
 
     } catch (error) {
       console.error(error)

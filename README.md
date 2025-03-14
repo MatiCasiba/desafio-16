@@ -324,7 +324,8 @@ const App = () => {
       //console.log(productoEditadoBackend);
 
       # aviso a react que cambió lgo dentro del arrya de productos
-      const nuevoEstadoUsuarios = usuarios.map(user => user.id === usuarioEditado.id ? productoEditado : user)
+      const nuevoEstadoUsuarios = usuarios.map(user => 
+        user.id === usuarioEditado.id ? usuarioEditado : user)
 
       setUsuarios(nuevoEstadoUsuarios)
 
