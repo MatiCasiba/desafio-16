@@ -123,12 +123,12 @@ const Formulario = ({agregarUsuario, usuarioAEditar, setUsuarioAEditar,  editarU
                 />
 
                 {/* CAMPO IMÁGEN */}
-                <lable
+                <label
                     htmlFor="lbl-image"
                     className="block mb-2 text-sm font-bold text-gray-700 tracking-wider"
                 >
                     Imagen
-                </lable>
+                </label>
                 <input     
                     type="text"
                     id="lbl-image"
